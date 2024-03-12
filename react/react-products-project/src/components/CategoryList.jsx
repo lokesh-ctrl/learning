@@ -1,16 +1,20 @@
+import { getProducts } from "../services/product";
 import { ProductList } from "./ProductsList";
+import { useState, useEffect } from "react";
 
 export const CategoryList = ({ checked, searchValue }) => {
-  const products = [
-    { category: "Fruits", price: "$1", stocked: true, name: "Apple" },
-    { category: "Fruits", price: "$1", stocked: true, name: "Dragonfruit" },
-    { category: "Fruits", price: "$2", stocked: false, name: "Passionfruit" },
-    { category: "Vegetables", price: "$2", stocked: true, name: "Spinach" },
-    { category: "Vegetables", price: "$4", stocked: false, name: "Pumpkin" },
-    { category: "Vegetables", price: "$1", stocked: true, name: "Peas" },
-    { category: "Soaps", price: "$1", stocked: true, name: "Ponds" },
-    { category: "Shampoos", price: "$1", stocked: true, name: "Tresmee" },
-  ];
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    async function getData() {
+      const products = await getProducts();
+      setProducts(products);
+    }
+    getData();
+    // getProducts().then((data) => {
+    //   setProducts(data);
+    // });
+  }, [getProducts]);
+
   const categories = new Set();
   products.forEach((product) => {
     categories.add(product.category);
