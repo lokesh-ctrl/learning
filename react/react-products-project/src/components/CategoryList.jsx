@@ -7,7 +7,7 @@ export const CategoryList = ({ checked, searchValue }) => {
   useEffect(() => {
     async function getData() {
       const products = await getProducts();
-      setProducts(products);
+      setProducts(products.rows);
     }
     getData();
     // getProducts().then((data) => {
@@ -20,6 +20,16 @@ export const CategoryList = ({ checked, searchValue }) => {
     categories.add(product.category);
   });
 
+  const shouldShowProduct = (product) => {
+    if (checked && product.stocked == false) {
+      return false;
+    }
+    if (searchValue) {
+      return product.name.includes(searchValue);
+    }
+    return true;
+  };
+
   return (
     <>
       {[...categories].map((c) => {
@@ -27,21 +37,24 @@ export const CategoryList = ({ checked, searchValue }) => {
           <ProductList
             name={c}
             key={c}
-            products={products
-              .filter((product) => product.category === c)
-              .filter((product) => {
-                if (checked) {
-                  return product.stocked;
-                } else {
-                  return true;
-                }
-              })
-              .filter((product) => {
-                if (!searchValue) {
-                  return true;
-                }
-                return product.name.includes(searchValue);
-              })}
+            products={
+              products
+                .filter((product) => product.category === c)
+                .filter((product) => shouldShowProduct(product))
+              // .filter((product) => {
+              //   if (checked) {
+              //     return product.stocked;
+              //   } else {
+              //     return true;
+              //   }
+              // })
+              // .filter((product) => {
+              //   if (!searchValue) {
+              //     return true;
+              //   }
+              //   return product.name.includes(searchValue);
+              // })
+            }
           />
         );
       })}
