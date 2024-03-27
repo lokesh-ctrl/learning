@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Button,
   Dialog,
@@ -9,10 +9,12 @@ import {
   Checkbox,
 } from "@material-tailwind/react";
 import { updateProduct } from "../services/product";
+import { ProductActionsContext } from "./CategoryList";
 
 export function EditProduct({ product, isOpen }) {
   const [open, setOpen] = React.useState(isOpen);
   const [productState, setProduct] = React.useState(product);
+  const { handlUpdateProduct } = useContext(ProductActionsContext);
 
   const handleOpen = () => setOpen(!open);
 
@@ -28,6 +30,7 @@ export function EditProduct({ product, isOpen }) {
 
   const handleSave = () => {
     updateProduct(productState);
+    handlUpdateProduct(productState);
     handleOpen();
   };
 

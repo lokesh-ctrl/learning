@@ -1,7 +1,8 @@
 import { getProducts } from "../services/product";
 import { ProductList } from "./ProductsList";
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 
+export const ProductActionsContext = createContext(null);
 export const CategoryList = ({ checked, searchValue }) => {
   const [products, setProducts] = useState([]);
   useEffect(() => {
@@ -10,9 +11,6 @@ export const CategoryList = ({ checked, searchValue }) => {
       setProducts(products.rows);
     }
     getData();
-    // getProducts().then((data) => {
-    //   setProducts(data);
-    // });
   }, [getProducts]);
 
   const categories = new Set();
@@ -30,32 +28,52 @@ export const CategoryList = ({ checked, searchValue }) => {
     return true;
   };
 
+  const handlUpdateProduct = (updatedProduct) => {
+    const newProducts = [];
+    products.forEach((product) => {
+      if (product.id == updatedProduct.id) {
+        newProducts.push(updatedProduct);
+      } else {
+        newProducts.push(product);
+      }
+    });
+    setProducts(newProducts);
+  };
+
+  const handleDeleteProduct = (deletedProductId) => {
+    setProducts(products.filter((product) => product.id !== deletedProductId));
+  };
+
   return (
     <>
       {[...categories].map((c) => {
         return (
-          <ProductList
-            name={c}
-            key={c}
-            products={
-              products
-                .filter((product) => product.category === c)
-                .filter((product) => shouldShowProduct(product))
-              // .filter((product) => {
-              //   if (checked) {
-              //     return product.stocked;
-              //   } else {
-              //     return true;
-              //   }
-              // })
-              // .filter((product) => {
-              //   if (!searchValue) {
-              //     return true;
-              //   }
-              //   return product.name.includes(searchValue);
-              // })
-            }
-          />
+          <ProductActionsContext.Provider
+            value={{ handlUpdateProduct, handleDeleteProduct }}
+          >
+            <ProductList
+              name={c}
+              key={c}
+              products={
+                products
+                  .filter((product) => product.category === c)
+                  .filter((product) => shouldShowProduct(product))
+                // .filter((product) => {
+                //   if (checked) {
+                //     return product.stocked;
+                //   } else {
+                //     return true;
+                //   }
+                // })
+                // .filter((product) => {
+                //   if (!searchValue) {
+                //     return true;
+                //   }
+                //   return product.name.includes(searchValue);
+                // })
+              }
+            />
+          </ProductActionsContext.Provider>
         );
       })}
     </>
