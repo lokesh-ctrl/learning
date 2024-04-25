@@ -1,5 +1,5 @@
 import axios from "axios";
-const PRODUCTS_URL = "https://3e8a-117-221-56-127.ngrok-free.app/api/products";
+const PRODUCTS_URL = "https://c75e-61-3-33-200.ngrok-free.app/api/products";
 
 export const getProducts = async () => {
   // const response = await fetch("http://localhost:3000/products");

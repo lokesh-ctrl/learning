@@ -1,0 +1,6 @@
+User able to register with email and password 
+If registered user comes in able to login with email and password /login
+
+User able to see active other users in the platform /home
+User able to send messages to other users 
+User able to receive the messages

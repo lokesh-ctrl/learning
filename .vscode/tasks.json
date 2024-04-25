@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "dev",
+			"path": "react/react-products-project",
+			"problemMatcher": [],
+			"label": "npm: dev - react/react-products-project",
+			"detail": "vite"
+		}
+	]
+}
