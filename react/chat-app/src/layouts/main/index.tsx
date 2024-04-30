@@ -17,6 +17,7 @@ const MainLayout = () => {
             direction="column"
             alignItems={"center"}
           ></Stack>
+          Hi
         </Stack>
         <Outlet />
       </Container>
