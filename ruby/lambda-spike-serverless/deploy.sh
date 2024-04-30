@@ -1,0 +1,2 @@
+serverless rubylayer
+serverless deploy

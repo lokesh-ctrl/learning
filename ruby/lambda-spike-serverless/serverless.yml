@@ -1,0 +1,35 @@
+service: lambda-spike-serverless
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  region: ap-southeast-2
+  runtime: ruby3.2
+  iam:
+    role: arn:aws:iam::968089512301:role/spike-serverless-framework
+
+plugins:
+  - serverless-lift
+  - serverless-ruby-layer
+
+constructs:
+  messagesResultsQueue:
+    type: queue
+    worker:
+      handler: src/handlers/result.run
+  messagesInputQueue:
+    type: queue
+    worker:
+      handler: src/handlers/worker.run
+      environment:
+        QUEUE_URL: ${messagesResultsQueue.queueUrl}
+
+functions:
+  createSQSMessage:
+    handler: src/handlers/handler.run
+    events:
+      - http:
+          method: post
+          path: message
+    environment:
+      QUEUE_URL: ${construct:messagesInputQueue.queueUrl}
