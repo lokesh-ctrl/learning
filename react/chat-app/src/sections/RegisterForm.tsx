@@ -11,6 +11,7 @@ import * as Yup from "yup";
 import { Eye, EyeSlash } from "phosphor-react";
 import { registerUser } from "../services/auth.ts";
 import { yupResolver } from "@hookform/resolvers/yup";
+import {useNavigate} from "react-router-dom";
 
 export function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -45,11 +46,12 @@ export function RegisterForm() {
     register,
     formState: { errors },
   } = methods;
+  const navigate = useNavigate();
   const onSubmit = async (data: any) => {
     const response = await registerUser(data);
     if (response.error) {
     } else {
-      // redirect to home page
+      navigate("/");
     }
   };
   return (

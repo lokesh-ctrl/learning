@@ -11,7 +11,6 @@ const Register = () => {
         Sign in
       </Link>
       <RegisterForm />
-      {/*<RegisterFormBasic/>*/}
     </>
   );
 };

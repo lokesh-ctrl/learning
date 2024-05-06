@@ -35,7 +35,7 @@ export default function Router() {
 
 const ProtectedRoute = (Component: any) => () => {
   const accessToken = Cookies.get("access_token");
-  return accessToken ? <Navigate to="/" /> : <Component />;
+  return accessToken ? <Navigate to="/home" /> : <Component />;
 };
 
 const LoginPage = Loadable(
