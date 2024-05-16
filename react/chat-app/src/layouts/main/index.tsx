@@ -1,27 +1,14 @@
 import { Container, Stack } from "@mui/material";
-import { Navigate, Outlet } from "react-router-dom";
+import {Outlet} from "react-router-dom";
+import NavigationBar from "../../components/layouts/NavigationBar/NavigationBar.tsx";
 
-const isAuthenticated = false;
 
 const MainLayout = () => {
-  if (isAuthenticated) {
-    return <Navigate to="/chat" />;
-  }
-
   return (
-    <>
-      <Container sx={{ mt: 5 }} maxWidth="sm">
-        <Stack spacing={5}>
-          <Stack
-            sx={{ width: "100%" }}
-            direction="column"
-            alignItems={"center"}
-          ></Stack>
-          Hi
-        </Stack>
-        <Outlet />
-      </Container>
-    </>
+      <Stack direction='row'>
+          <NavigationBar/>
+          <Outlet/>
+      </Stack>
   );
 };
 

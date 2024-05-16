@@ -1,0 +1,10 @@
+.chat-icon:hover {
+    background-color: #535bf2;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 50%;
+}
