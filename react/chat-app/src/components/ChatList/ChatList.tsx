@@ -1,17 +1,23 @@
-import ChatItem from "../ChatItem/ChatItem.tsx";
+import { Box } from "@mui/material";
+import ChatItem, {ChatItemProps} from "../ChatItem/ChatItem.tsx";
 import './ChatList.css'
 
-const ChatList = () => {
+type ChatListProps = {
+    chatListType: string
+    chats: ChatItemProps[]
+}
+
+const ChatList = ({chatListType, chats}: ChatListProps) => {
     return (
         <div className={"chat-list"}>
-            <ChatItem name={"Tessie"} lastMessage={"Call me".slice(0, 20)} lastMessageTime={"9:36"}
-                      newMessagesCount={10}/>
-            <ChatItem name={"Tessie"} lastMessage={"Call me".slice(0, 20)} lastMessageTime={"9:36"}
-                      newMessagesCount={10}/>
-            <ChatItem name={"Tessie"} lastMessage={"Call me".slice(0, 20)} lastMessageTime={"9:36"}
-                      newMessagesCount={10}/>
-            <ChatItem name={"Tessie"} lastMessage={"Call me".slice(0, 20)} lastMessageTime={"9:36"}
-                      newMessagesCount={10}/>
+            <Box sx={{padding: "5px 0", color: "grey"}}>{chatListType}</Box>
+            {
+                chats.map((chat) => {
+                    return <ChatItem key={chat.name} name={chat.name} lastMessage={chat.lastMessage.slice(0, 20)}
+                                     lastMessageTime={chat.lastMessageTime}
+                                     newMessagesCount={chat.newMessagesCount}/>
+                })
+            }
         </div>
     )
 }

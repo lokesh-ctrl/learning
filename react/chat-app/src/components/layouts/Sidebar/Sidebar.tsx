@@ -1,8 +1,28 @@
 import {Box, IconButton, Stack, TextField, useTheme} from "@mui/material";
 import {CircleDashed, MagnifyingGlass} from "phosphor-react";
 import './Sidebar.css';
-import ChatItem from "../../ChatItem/ChatItem.tsx";
 import ChatList from "../../ChatList/ChatList.tsx";
+import {ChatItemProps} from "../../ChatItem/ChatItem.tsx";
+
+const pinnedChats: ChatItemProps[] = [{
+    name: "User 1",
+    lastMessage: "Hello",
+    lastMessageTime: "7:40"
+}]
+
+const allChats: ChatItemProps[] = [
+    {
+        name: "User 1",
+        lastMessage: "Hello",
+        lastMessageTime: "7:40"
+    },
+    {
+        name: "User 2",
+        lastMessage: "How are you doing",
+        lastMessageTime: "10:40"
+    }
+]
+
 
 const Sidebar = () => {
     const theme = useTheme();
@@ -17,7 +37,8 @@ const Sidebar = () => {
             <TextField sx={{padding: 0}} InputProps={{
                 startAdornment: <MagnifyingGlass/>
             }} className={"search-input"} placeholder={"Search..."}/>
-            <ChatList/>
+            <ChatList chatListType={"Pinned"} chats={pinnedChats}/>
+            <ChatList chatListType={"All chats"} chats={allChats}/>
         </Box>)
 }
 

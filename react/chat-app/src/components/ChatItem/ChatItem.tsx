@@ -1,7 +1,7 @@
 import {Avatar, Box, Stack, useTheme} from "@mui/material";
 import './ChatItem.css';
 
-type ChatItemProps = {
+export type ChatItemProps = {
     name: string;
     lastMessage: string;
     lastMessageTime: string;
@@ -16,7 +16,8 @@ const ChatItem = ({name, lastMessage, lastMessageTime, newMessagesCount}: ChatIt
             padding: "20px",
             borderRadius: "5px",
             display: "flex",
-            flexDirection: "row"
+            flexDirection: "row",
+            overflow: "hidden"
         }}>
             <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg"/>
             <Stack justifyContent={"space-between"} flexDirection={"row"} width={"100%"}>
