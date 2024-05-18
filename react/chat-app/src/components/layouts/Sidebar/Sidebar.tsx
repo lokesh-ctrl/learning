@@ -1,4 +1,4 @@
-import {Box, IconButton, Stack, TextField, useTheme} from "@mui/material";
+import {Box, Divider, IconButton, Stack, TextField, useTheme} from "@mui/material";
 import {CircleDashed, MagnifyingGlass} from "phosphor-react";
 import './Sidebar.css';
 import ChatList from "../../ChatList/ChatList.tsx";
@@ -37,6 +37,7 @@ const Sidebar = () => {
             <TextField sx={{padding: 0}} InputProps={{
                 startAdornment: <MagnifyingGlass/>
             }} className={"search-input"} placeholder={"Search..."}/>
+            <Divider sx={{marginTop: "10px"}}/>
             <ChatList chatListType={"Pinned"} chats={pinnedChats}/>
             <ChatList chatListType={"All chats"} chats={allChats}/>
         </Box>)
