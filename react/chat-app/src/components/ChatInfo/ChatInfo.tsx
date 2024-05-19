@@ -1,9 +1,18 @@
 import {Avatar, Box, useTheme, Stack, TextField, IconButton} from "@mui/material";
 import {PaperPlaneRight} from "phosphor-react";
+import {styled} from "@mui/material/styles";
+
+const StyledInput = styled(TextField)(() => ({
+    "& .MuiInputBase-input": {
+        paddingTop: '12px',
+        paddingBottom: '12px',
+        backgroundColor: 'white'
+    }
+}));
 
 const ChatInfo = () => {
     const theme = useTheme();
-    return <div>
+    return <Stack height={'100%'} maxHeight={'100vh'} width={'auto'}>
         <Box sx={{
             height: "8vh",
             width: "100%",
@@ -20,11 +29,11 @@ const ChatInfo = () => {
                 </Stack>
             </Stack>
         </Box>
-        <Box sx={{height: "80vh", backgroundColor: theme.palette.grey["200"]}}>
+        <Box sx={{flexGrow: 1, height: '100%', overflowY: 'scroll', backgroundColor: theme.palette.grey["200"]}}>
             Message display here
         </Box>
         <Box sx={{display: "flex", flexDirection: "row"}}>
-            <TextField placeholder={"Send message here"}/>
+            <StyledInput fullWidth placeholder='Write a message...' variant='filled'/>
             <Box
                 sx={{backgroundColor: theme.palette.primary.dark, height: "50px", width: "50px", borderRadius: "10px"}}>
                 <IconButton>
@@ -32,6 +41,6 @@ const ChatInfo = () => {
                 </IconButton>
             </Box>
         </Box>
-    </div>
+    </Stack>
 }
 export default ChatInfo
