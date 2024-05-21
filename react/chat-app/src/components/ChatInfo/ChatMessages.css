@@ -1,0 +1,11 @@
+.chat-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sent {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
