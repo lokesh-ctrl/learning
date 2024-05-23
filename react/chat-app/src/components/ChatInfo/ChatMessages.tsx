@@ -1,4 +1,4 @@
-import {Box, Stack, useTheme} from "@mui/material";
+import {Box, Divider, Stack, Typography, useTheme} from "@mui/material";
 import {faker} from '@faker-js/faker';
 import cx from 'classnames';
 import './ChatMessages.css'
@@ -42,12 +42,15 @@ export const ChatMessages = () => {
 
     const Message = ({message}) => {
         return <div style={{width: '100%'}}>
-            <div className={cx({'sent': message.sender.userId == 1, 'received': message.sender.userId !== 1})}>
+            <div className={cx({
+                'sent': message.sender.userId == 1,
+                'received': message.sender.userId !== 1
+            })}>
                 <Box sx={{
                     backgroundColor: message.sender.userId == 1 ? theme.palette.primary.light : theme.palette.grey["500"],
                     margin: '10px',
                     width: '50%'
-                }}>
+                }} className={'message-card'}>
                     <div key={message.content}>{message.content}</div>
                     <span style={{color: theme.palette.grey["600"]}}>{Intl.DateTimeFormat('en', {
                         hour: 'numeric',
@@ -59,17 +62,22 @@ export const ChatMessages = () => {
     }
 
     const messagesContent = [];
+    const theme = useTheme();
     parsedMessages.forEach((messages, date) => {
         messagesContent.push(<div>
-            <div className={'chat-date'}>{date}</div>
+            <Stack direction='row' alignItems='center' justifyContent='space-between'>
+                <Divider sx={{width: '30%'}}/>
+                <Typography variant='caption' sx={{color: theme.palette.text}}>
+                    {date}
+                </Typography>
+                <Divider sx={{width: '30%'}}/>
+            </Stack>
             {messages.map((message) => {
                 return <Message message={message}/>
             })}
         </div>)
     })
 
-
-    const theme = useTheme();
     return (<Box sx={{flexGrow: 1, height: '100%', overflowY: 'scroll', backgroundColor: theme.palette.grey["200"]}}>
         <div>{messagesContent}</div>
     </Box>)
