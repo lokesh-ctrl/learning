@@ -2,42 +2,38 @@ import {Box, Divider, IconButton, Stack, TextField, useTheme} from "@mui/materia
 import {CircleDashed, MagnifyingGlass} from "phosphor-react";
 import './Sidebar.css';
 import ChatList from "../../ChatList/ChatList.tsx";
-import {ChatItemProps} from "../../ChatItem/ChatItem.tsx";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {getConversations} from "../../../services/chat.ts";
-
-const pinnedChats: ChatItemProps[] = [{
-    name: "User 1",
-    lastMessage: "Hello",
-    lastMessageTime: "7:40"
-}, {
-    name: "User 1",
-    lastMessage: "Hello",
-    lastMessageTime: "7:40"
-}]
-
-const allChats: ChatItemProps[] = [
-    {
-        name: "User 1",
-        lastMessage: "Hello",
-        lastMessageTime: "7:40"
-    },
-    {
-        name: "User 2",
-        lastMessage: "How are you doing",
-        lastMessageTime: "10:40"
-    }
-]
-
 
 const Sidebar = () => {
     const theme = useTheme();
+    const [pinnedConversations, setPinnedConversations] = useState([]);
+    const [allConversations, setAllConversations] = useState([]);
     useEffect(() => {
         const response = getConversations();
         Promise.all([response]).then((result) => {
-            console.log(result[0].response.data);
+            const loggedInUserId = result[0].response.data.user.id;
+            const pinnedConvs = [];
+            const allConvs = [];
+
+            result[0].response.data.conversations.forEach((conv) => {
+                let otherUserName = "";
+                if (conv.users[0].id == loggedInUserId) {
+                    otherUserName = conv.users[1].full_name
+                } else {
+                    otherUserName = conv.users[0].full_name
+                }
+
+                if (conv.active == 'pinned') {
+                    pinnedConvs.push({convId: conv.id, lastMessage: "", lastMessageTime: "", name: otherUserName})
+                } else {
+                    allConvs.push({convId: conv.id, lastMessage: "", lastMessageTime: "", name: otherUserName})
+                }
+            })
+            setPinnedConversations(pinnedConvs);
+            setAllConversations(allConvs);
         })
-    })
+    }, [])
     return (
         <Box sx={{backgroundColor: theme.palette.primary["50"], height: "100vh", width: "25vw", padding: "20px"}}>
             <Stack flexDirection={"row"} justifyContent={"space-between"} width={"100%"}>
@@ -50,8 +46,8 @@ const Sidebar = () => {
                 startAdornment: <MagnifyingGlass/>
             }} className={"search-input"} placeholder={"Search..."}/>
             <Divider sx={{marginTop: "10px"}}/>
-            <ChatList chatListType={"Pinned"} chats={pinnedChats}/>
-            <ChatList chatListType={"All chats"} chats={allChats}/>
+            <ChatList chatListType={"Pinned"} chats={pinnedConversations}/>
+            <ChatList chatListType={"All chats"} chats={allConversations}/>
         </Box>)
 }
 
