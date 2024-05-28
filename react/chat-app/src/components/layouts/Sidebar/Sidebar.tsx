@@ -32,14 +32,14 @@ const Sidebar = () => {
 
                 if (conv.active == 'pinned') {
                     pinnedConvs.push({
-                        convId: conv.id,
+                        conversationId: conv.id,
                         lastMessage: lastMessage,
                         lastMessageTime: lastMessageTime,
                         name: otherUserName
                     })
                 } else {
                     allConvs.push({
-                        convId: conv.id,
+                        conversationId: conv.id,
                         lastMessage: lastMessage,
                         lastMessageTime: lastMessageTime,
                         name: otherUserName

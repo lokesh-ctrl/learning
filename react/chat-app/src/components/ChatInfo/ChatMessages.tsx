@@ -38,8 +38,6 @@ export const ChatMessages = () => {
         }
     })
 
-    console.log(messages)
-
     const Message = ({message}) => {
         return <div style={{width: '100%'}}>
             <div className={cx({

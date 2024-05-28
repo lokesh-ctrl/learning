@@ -28,6 +28,7 @@ export default function Router() {
       element: <MainLayout/>,
       children: [
         {element: <MessagesPage/>, path: "chat"},
+        {element: <MessagesPage/>, path: "chat/*"},
         {element: <MessagesPage/>, path: "calls"},
         {element: <MessagesPage/>, path: "contacts"},
         {element: <MessagesPage/>, path: "settings"}
