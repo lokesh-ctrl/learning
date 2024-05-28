@@ -23,11 +23,27 @@ const Sidebar = () => {
                 } else {
                     otherUserName = conv.users[0].full_name
                 }
+                const lastMessage = conv.lastMessage[0].content;
+                const lastMessageTime = Intl.DateTimeFormat('en', {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    timeZone: 'ist'
+                }).format(new Date(conv.lastMessage[0].createdAt))
 
                 if (conv.active == 'pinned') {
-                    pinnedConvs.push({convId: conv.id, lastMessage: "", lastMessageTime: "", name: otherUserName})
+                    pinnedConvs.push({
+                        convId: conv.id,
+                        lastMessage: lastMessage,
+                        lastMessageTime: lastMessageTime,
+                        name: otherUserName
+                    })
                 } else {
-                    allConvs.push({convId: conv.id, lastMessage: "", lastMessageTime: "", name: otherUserName})
+                    allConvs.push({
+                        convId: conv.id,
+                        lastMessage: lastMessage,
+                        lastMessageTime: lastMessageTime,
+                        name: otherUserName
+                    })
                 }
             })
             setPinnedConversations(pinnedConvs);
