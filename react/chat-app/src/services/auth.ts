@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const API_ENDPOINT = "http://13.233.130.111:3000/api";
+const API_ENDPOINT = "http://localhost:3000/api";
 
 export const registerUser = async (data: any) => {
   try {
@@ -9,7 +9,6 @@ export const registerUser = async (data: any) => {
     Cookies.set("access_token", response.data["access_token"], { expires: 1 });
     return { response: response, error: null };
   } catch (error: any) {
-    console.log(error.response.data);
     return { error: error.response.data };
   }
 };
@@ -20,7 +19,6 @@ export const loginUser = async (data: any) => {
       Cookies.set("access_token", response.data["access_token"], { expires: 1 });
       return { response: response, error: null };
     } catch (error: any) {
-      console.log(error.response.data);
       return { error: error.response.data };
     }
   };

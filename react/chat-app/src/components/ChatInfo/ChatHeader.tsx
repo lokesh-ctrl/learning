@@ -1,6 +1,6 @@
 import {Avatar, Box, Stack} from "@mui/material";
 
-export const ChatHeader = () => {
+export const ChatHeader = ({userName, conversationType}) => {
     return (
         <Box sx={{
             height: "8vh",
@@ -13,7 +13,7 @@ export const ChatHeader = () => {
             <Stack flexDirection={"row"}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg"/>
                 <Stack flexDirection={"column"} sx={{marginLeft: "20px"}}>
-                    <div style={{fontWeight: "600"}}>User 1</div>
+                    <div style={{fontWeight: "600"}}>{userName}</div>
                     <div style={{fontSize: "0.8rem"}}>Online</div>
                 </Stack>
             </Stack>

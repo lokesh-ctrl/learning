@@ -48,8 +48,10 @@ export function RegisterForm() {
   } = methods;
   const navigate = useNavigate();
   const onSubmit = async (data: any) => {
+    console.log(data)
     const response = await registerUser(data);
     if (response.error) {
+      // TODO document why this block is empty
     } else {
       navigate("/");
     }
@@ -57,9 +59,6 @@ export function RegisterForm() {
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* {!!errors.afterSubmit && (
-          <Alert severity="error">{errors.afterSubmit.message}</Alert>
-        )} */}
         <Stack spacing={3}>
           <TextField
             label="First Name"

@@ -23,12 +23,16 @@ const Sidebar = () => {
                 } else {
                     otherUserName = conv.users[0].full_name
                 }
-                const lastMessage = conv.lastMessage[0].content;
-                const lastMessageTime = Intl.DateTimeFormat('en', {
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    timeZone: 'ist'
-                }).format(new Date(conv.lastMessage[0].createdAt))
+                let lastMessage = '';
+                let lastMessageTime = '';
+                if (conv.lastMessage.length > 0) {
+                    lastMessage = conv.lastMessage[0].content;
+                    lastMessageTime = Intl.DateTimeFormat('en', {
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        timeZone: 'ist'
+                    }).format(new Date(conv.lastMessage[0].createdAt))
+                }
 
                 if (conv.active == 'pinned') {
                     pinnedConvs.push({
