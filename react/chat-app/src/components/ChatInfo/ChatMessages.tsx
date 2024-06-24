@@ -2,32 +2,38 @@ import {Box, Divider, Stack, Typography, useTheme} from "@mui/material";
 import {faker} from '@faker-js/faker';
 import cx from 'classnames';
 import './ChatMessages.css'
+import {useEffect, useState} from "react";
+import {getMessages} from "../../services/chat.ts";
 
-export const ChatMessages = () => {
-    const messages = [{
+export const ChatMessages = ({conversationId}) => {
+    const [messages, setMessages] = useState([{
         content: faker.lorem.sentence(),
-        timeStamp: faker.date.between({from: '2024-01-01T00:00:00.000Z', to: '2024-01-01T00:00:12.000Z'}),
-        sender: {
-            userId: 1,
-        }
+        createdAt: faker.date.between({from: '2024-01-01T00:00:00.000Z', to: '2024-01-01T00:00:12.000Z'}),
+        senderId: 1,
     }, {
         content: faker.lorem.sentence(),
-        timeStamp: faker.date.between({from: '2024-01-01T00:00:12.000Z', to: '2024-01-01T00:07:24.000Z'}),
-        sender: {
-            userId: 1,
-        }
+        createdAt: faker.date.between({from: '2024-01-01T00:00:12.000Z', to: '2024-01-01T00:07:24.000Z'}),
+        senderId: 1
     }, {
         content: faker.lorem.sentence(),
-        timeStamp: faker.date.between({from: '2024-01-02T00:00:00.000Z', to: '2024-02-03T00:00:00.000Z'}),
-        sender: {
-            userId: 2,
-        }
-    }];
+        createdAt: faker.date.between({from: '2024-01-02T00:00:00.000Z', to: '2024-02-03T00:00:00.000Z'}),
+        senderId: 2
+    }]);
+    useEffect(() => {
+        const response = getMessages(conversationId);
+        Promise.all([response]).then((result) => {
+            const messages = result[0].data.map((message) => {
+                return {...message, createdAt: new Date(message.createdAt)}
+            })
+            console.log(messages)
+            setMessages(messages)
+        })
+    }, [conversationId])
 
     const parsedMessages = new Map();
 
     messages.forEach((message) => {
-        const key = message.timeStamp.toDateString();
+        const key = message.createdAt.toDateString();
         if (parsedMessages.get(key)) {
             const prevMessage = parsedMessages.get(key);
             prevMessage.push(message)
@@ -41,11 +47,11 @@ export const ChatMessages = () => {
     const Message = ({message}) => {
         return <div style={{width: '100%'}}>
             <div className={cx({
-                'sent': message.sender.userId == 1,
-                'received': message.sender.userId !== 1
+                'sent': message.senderId == 1,
+                'received': message.senderId !== 1
             })}>
                 <Box sx={{
-                    backgroundColor: message.sender.userId == 1 ? theme.palette.primary.light : theme.palette.grey["500"],
+                    backgroundColor: message.senderId == 1 ? theme.palette.primary.light : theme.palette.grey["500"],
                     margin: '10px',
                     width: '50%'
                 }} className={'message-card'}>
@@ -53,7 +59,7 @@ export const ChatMessages = () => {
                     <span style={{color: theme.palette.grey["600"]}}>{Intl.DateTimeFormat('en', {
                         hour: 'numeric',
                         minute: 'numeric'
-                    }).format(message.timeStamp)}</span>
+                    }).format(message.createdAt)}</span>
                 </Box>
             </div>
         </div>

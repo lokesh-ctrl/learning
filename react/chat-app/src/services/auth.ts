@@ -22,4 +22,14 @@ export const loginUser = async (data: any) => {
       return { error: error.response.data };
     }
   };
-  
+
+
+export const getMe = async () => {
+    try {
+        const authToken = Cookies.get('access_token');
+        const response = await axios.get(API_ENDPOINT + "/users/me", {headers: {'Authorization': 'Bearer ' + authToken}});
+        return {response: response, error: null};
+    } catch (error: any) {
+        return {error: error.response.data};
+    }
+};

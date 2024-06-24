@@ -2,16 +2,20 @@ import {Box, Divider, IconButton, Stack, TextField, useTheme} from "@mui/materia
 import {CircleDashed, MagnifyingGlass} from "phosphor-react";
 import './Sidebar.css';
 import ChatList from "../../ChatList/ChatList.tsx";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {getConversations} from "../../../services/chat.ts";
+import {LoggedInUserContext} from "../../UserContext.tsx";
 
 const Sidebar = () => {
     const theme = useTheme();
     const [pinnedConversations, setPinnedConversations] = useState([]);
     const [allConversations, setAllConversations] = useState([]);
+    const [userContext, setUserContext] = useContext(LoggedInUserContext);
     useEffect(() => {
         const response = getConversations();
         Promise.all([response]).then((result) => {
+            const loggedInUser = result[0].response.data.user;
+            setUserContext(loggedInUser);
             const loggedInUserId = result[0].response.data.user.id;
             const pinnedConvs = [];
             const allConvs = [];

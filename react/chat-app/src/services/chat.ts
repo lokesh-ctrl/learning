@@ -22,3 +22,26 @@ export const getConversationById = async (id: string) => {
         return {error: error.response.data};
     }
 }
+
+export const sendMessageIntoConversation = async (convId: string, message: string, senderId: string, receiverId: string) => {
+    try {
+        const authToken = Cookies.get('access_token');
+        const response = await axios.post(API_ENDPOINT + '/messages', {
+            content: message,
+            conversation_id: parseInt(convId),
+            sender_id: senderId,
+            receiver_id: receiverId
+        }, {headers: {'Authorization': 'Bearer ' + authToken}})
+        return response
+    } catch (e: any) {
+    }
+}
+
+export const getMessages = async (convId: string) => {
+    try {
+        const authToken = Cookies.get('access_token')
+        const response = await axios.get(API_ENDPOINT + '/messages/conversation/' + convId, {headers: {'Authorization': 'Bearer ' + authToken}})
+        return response;
+    } catch (e) {
+    }
+}
