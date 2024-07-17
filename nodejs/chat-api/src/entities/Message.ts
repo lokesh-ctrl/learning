@@ -1,18 +1,44 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn
+} from "typeorm";
 import { User } from "./User";
 import { Conversation } from "./Conversation";
 
 @Entity()
 export class Message {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  content: string;
+  content!: string;
+
+  @Column()
+  sender_id!: number;
+
+  @Column()
+  receiver_id!: number;
+
+  @Column()
+  conversation_id!: number;
 
   @ManyToOne(() => User, (user) => user.messages)
-  sender: User;
+  sender!: User;
+
+  @ManyToOne(() => User, (user) => user.messages)
+  receiver!: User;
 
   @ManyToOne(() => Conversation, (conversation) => conversation.messages)
-  conversation: Conversation;
+  conversation!: Conversation;
+
+
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt!: Date;
+
+  @UpdateDateColumn({ type: 'timestamp' })
+  updatedAt!: Date;
 }
