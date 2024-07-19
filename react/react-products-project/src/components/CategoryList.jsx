@@ -8,7 +8,7 @@ export const CategoryList = ({ checked, searchValue }) => {
   useEffect(() => {
     async function getData() {
       const products = await getProducts();
-      setProducts(products.rows);
+      setProducts(products);
     }
     getData();
   }, [getProducts]);
