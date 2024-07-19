@@ -22,20 +22,20 @@ const Sidebar = () => {
 
             result[0].response.data.conversations.forEach((conv) => {
                 let otherUserName = "";
-                if (conv.users[0].id == loggedInUserId) {
-                    otherUserName = conv.users[1].full_name
+                if (conv.participants[0].id == loggedInUserId) {
+                    otherUserName = conv.participants[1].full_name
                 } else {
-                    otherUserName = conv.users[0].full_name
+                    otherUserName = conv.participants[0].full_name
                 }
                 let lastMessage = '';
                 let lastMessageTime = '';
-                if (conv.lastMessage.length > 0) {
-                    lastMessage = conv.lastMessage[0].content;
+                if (conv.lastMessage) {
+                    lastMessage = conv.lastMessage.content;
                     lastMessageTime = Intl.DateTimeFormat('en', {
                         hour: 'numeric',
                         minute: 'numeric',
                         timeZone: 'ist'
-                    }).format(new Date(conv.lastMessage[0].createdAt))
+                    }).format(new Date(conv.lastMessage.createdAt))
                 }
 
                 if (conv.active == 'pinned') {

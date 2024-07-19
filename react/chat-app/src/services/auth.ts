@@ -5,7 +5,7 @@ const API_ENDPOINT = "http://localhost:3000/api";
 
 export const registerUser = async (data: any) => {
   try {
-    const response = await axios.post(API_ENDPOINT + "/register", data);
+    const response = await axios.post(API_ENDPOINT + "/users/register", data);
     Cookies.set("access_token", response.data["access_token"], { expires: 1 });
     return { response: response, error: null };
   } catch (error: any) {
@@ -15,7 +15,7 @@ export const registerUser = async (data: any) => {
 
 export const loginUser = async (data: any) => {
     try {
-      const response = await axios.post(API_ENDPOINT + "/login", data);
+      const response = await axios.post(API_ENDPOINT + "/users/login", data);
       Cookies.set("access_token", response.data["access_token"], { expires: 1 });
       return { response: response, error: null };
     } catch (error: any) {

@@ -7,6 +7,23 @@ import {getFormattedUser} from "../utils";
 
 
 export class ConversationService {
+	async getConversationById(conversationId: number): Promise<Conversation> {
+		const conversationRepository = getRepository(Conversation);
+		const conversation = await conversationRepository
+			.createQueryBuilder("conversation")
+			.leftJoinAndSelect("conversation.participants", "participant")
+			.leftJoinAndSelect("conversation.messages", "message")
+			.leftJoinAndSelect("message.sender", "sender")
+			.leftJoinAndSelect("message.receiver", "receiver")
+			.where("conversation.id = :conversationId", {conversationId})
+			.getOne();
+
+		if (!conversation) {
+			throw new Error("Conversation not found");
+		}
+
+		return {...conversation, participants: conversation.participants.map((user) => getFormattedUser(user))};
+	}
 	async createConversation(participants: number[], active: string) {
 		const conversationRepository = getRepository(Conversation);
 		const userRepository = getRepository(User);
@@ -20,7 +37,7 @@ export class ConversationService {
 		const conversationRepository = getRepository(Conversation);
 		const conversation = await conversationRepository.findOne({
 			where: {id: conversationId},
-			relations: ["messages"]
+			relations: ["messages", "participants"]
 		});
 		if (!conversation) throw new Error("Conversation not found");
 
@@ -28,8 +45,20 @@ export class ConversationService {
 		const sender = await userRepository.findOne({where: {id: senderId}});
 		if (!sender) throw new Error("Sender not found");
 
+		const receiver = conversation.participants.filter((user) => user.id != senderId)[0]
+
+		if (!receiver) throw new Error("Receiver not found");
+
 		const messageRepository = getRepository(Message);
-		const message = messageRepository.create({content, sender, conversation});
+		const message = messageRepository.create({
+			content,
+			sender,
+			conversation,
+			receiver,
+			sender_id: senderId,
+			receiver_id: receiver.id,
+			conversation_id: conversationId
+		});
 		await messageRepository.save(message);
 
 		conversation.messages.push(message);
@@ -42,7 +71,7 @@ export class ConversationService {
 		const conversationRepository = getRepository(Conversation);
 		const conversation = await conversationRepository.findOne({
 			where: {id: conversationId},
-			relations: ["messages", "messages.sender"]
+			relations: ["messages", "messages.sender", "messages.receiver"]
 		});
 		if (!conversation) {
 			throw new Error("Conversation not found");
@@ -62,6 +91,7 @@ export class ConversationService {
 		user: User
 	}> {
 		const userRepository = getRepository(User);
+		console.log(userId)
 		// @ts-ignore
 		const user = await userRepository.findOne({where: {id: userId}});
 		const conversationRepository = getRepository(Conversation);

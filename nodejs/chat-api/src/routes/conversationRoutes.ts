@@ -295,4 +295,76 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/conversations/{id}:
+ *   get:
+ *     summary: Get a conversation by ID
+ *     tags: [Conversations]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: Conversation ID
+ *     responses:
+ *       200:
+ *         description: Successfully fetched the conversation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 participants:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       username:
+ *                         type: string
+ *                       full_name:
+ *                         type: string
+ *                 messages:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       content:
+ *                         type: string
+ *                       sender:
+ *                         type: object
+ *                         properties:
+ *                           id:
+ *                             type: integer
+ *                           username:
+ *                             type: string
+ *                           full_name:
+ *                             type: string
+ *                       createdAt:
+ *                         type: string
+ *                         format: date-time
+ *       400:
+ *         description: Invalid input
+ *       404:
+ *         description: Conversation not found
+ */
+router.get("/:id", authMiddleware, async (req, res) => {
+  try {
+    const conversationId = parseInt(req.params.id);
+    const conversation = await conversationService.getConversationById(conversationId);
+    res.status(200).send(conversation);
+  } catch (error: any) {
+    res.status(400).send(error.message);
+  }
+});
+
 export default router;
