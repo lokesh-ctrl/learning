@@ -1,9 +1,8 @@
 import {Suspense, lazy, FunctionComponent} from "react"; // use to loading , loading screen until full page is load
-import {useRoutes, Navigate, BrowserRouter, Route, Routes} from "react-router-dom";
+import {useRoutes, Navigate, Route, Routes} from "react-router-dom";
 import LoadingScreen from "../components/Loading";
 import MainLayout from "../layouts/main";
 import Cookies from "js-cookie";
-import Login from "../pages/Login.tsx";
 
 const Loadable = (Component: FunctionComponent) => () => {
   return (

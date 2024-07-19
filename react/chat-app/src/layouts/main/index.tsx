@@ -23,10 +23,10 @@ const MainLayout = () => {
   return (
       <Stack direction='row'>
           <LoggedInUserContext.Provider value={[user,updateUserContext]}>
-          <NavigationBar/>
-          <div style={{flexGrow: 2}}>
-          <Outlet/>
-          </div>
+              <NavigationBar/>
+              <div style={{flexGrow: 2}}>
+                  <Outlet/>
+              </div>
           </LoggedInUserContext.Provider>
       </Stack>
   );

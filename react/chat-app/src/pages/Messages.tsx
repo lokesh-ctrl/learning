@@ -3,6 +3,7 @@ import ChatInfo from "../components/ChatInfo/ChatInfo.tsx";
 import {Stack} from "@mui/material";
 import {useLocation} from "react-router-dom";
 
+// localhost:3000/chat/1
 const Messages = () => {
     const location = useLocation();
     const conversationId = location.pathname.slice(6);

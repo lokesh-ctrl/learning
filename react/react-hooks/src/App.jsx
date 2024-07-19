@@ -1,6 +1,15 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import "./App.css";
 import { memo } from "react";
+import { Redux } from "./Redux";
+import { ReduxToolKit } from "./ReduxToolkit";
 
 const List = memo(() => {
   const [list, setList] = useContext(ListContext);
@@ -61,15 +70,64 @@ function App() {
   // });
 
   console.log("in app");
+
+  const [users, setUsers] = useState([
+    { name: "test" },
+    { name: "test2" },
+    { name: "another test" },
+  ]);
+  const removeUser = useCallback(
+    (selectedUser) => {
+      setUsers(users.filter((user) => user.name != selectedUser));
+    },
+    [users]
+  );
+  const [conversations, setConversations] = useState([
+    { active: "pinned" },
+    { active: "pinned" },
+    { active: "pinned1" },
+  ]);
   return (
     <>
-      <ListContext.Provider value={[list, setList]}>
-        <List />
-        <button onClick={addItem}>Add item</button>
-      </ListContext.Provider>
+      {/* <Redux /> */}
+      <ReduxToolKit/>
     </>
   );
 }
+
+const UsersComponent = memo(({ users, removeUser, conversations }) => {
+  const pinnedCOnvs = conversations.filter((conv) => conv.active == "pinned");
+  const restConvs = conversations.filter((conv) => conv.active != "pinned");
+  const pinnedMemoConvs = useMemo(
+    () =>
+      conversations.filter((conv) => {
+        console.log("recalculating");
+        return conv.active == "pinned";
+      }),
+    [conversations]
+  );
+  console.log("users component");
+  return (
+    <div>
+      <div>
+        {users.map((user) => {
+          return (
+            <div>
+              {user.name}
+              <button
+                onClick={() => {
+                  removeUser(user.name);
+                }}
+              >
+                Remove
+              </button>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+});
 
 export default App;
 
@@ -86,3 +144,7 @@ export default App;
 // use callback
 
 // use reducer
+
+// memo - remember component as long as dependencies dont change
+// use callback - remembers function
+// use memo - remembers value
