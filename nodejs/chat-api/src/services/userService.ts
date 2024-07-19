@@ -2,6 +2,7 @@ import {getRepository} from "typeorm";
 import {User} from "../entities/User";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import {getFormattedUser} from "../utils";
 
 export class UserService {
 	async register(first_name: string, last_name: string, email: string, password: string): Promise<string> {
@@ -27,12 +28,10 @@ export class UserService {
 		return token;
 	}
 
-	async getLoggedUser(token: string) {
-		let decoded = jwt.verify(token, 'your-jwt-secret');
+	async getLoggedUser(userId: string) {
 		const userRepository = getRepository(User);
 		// @ts-ignore
-		const userId = decoded.id
 		const user = await userRepository.findOne({where: {id: userId}});
-		return user
+		return getFormattedUser(user)
 	}
 }

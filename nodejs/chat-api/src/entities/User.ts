@@ -1,4 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinTable} from "typeorm";
+import { Expose } from "class-transformer";
 import { Conversation } from "./Conversation";
 import { Message } from "./Message";
 
@@ -26,7 +27,8 @@ export class User {
   @OneToMany(() => Message, (message) => message.sender)
   messages!: Message[];
 
-  get fullName() {
-    return this.first_name + ' ' + this.last_name;
+  @Expose({ name: "full_name" })
+  getFullName(): string {
+    return `${this.first_name} ${this.last_name}`;
   }
 }

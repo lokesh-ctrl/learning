@@ -1,5 +1,6 @@
 import {Router} from "express";
 import {UserService} from "../services/userService";
+import {authMiddleware} from "../middlewares/auth";
 
 const router = Router();
 const userService = new UserService();
@@ -85,17 +86,10 @@ router.post("/login", async (req, res) => {
 	}
 });
 
-router.get("/me", async (req, res) => {
+router.get("/me", authMiddleware, async (req, res) => {
 	try {
-		// Access the authorization header
-		const authHeader = req.headers.authorization;
-
-		if (!authHeader) {
-			return res.status(401).json({message: 'Unauthorized: Missing authorization header'});
-		}
-		const token = authHeader.split(' ')[1];
-
-		const user = await userService.getLoggedUser(token)
+		// @ts-ignore
+		const user = await userService.getLoggedUser(req.user.id)
 
 		res.status(200).send(user);
 	} catch (error: any) {

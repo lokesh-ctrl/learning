@@ -2,6 +2,9 @@ import {getRepository} from "typeorm";
 import {Conversation} from "../entities/Conversation";
 import {User} from "../entities/User";
 import {Message} from "../entities/Message";
+import {plainToClass} from "class-transformer";
+import {getFormattedUser} from "../utils";
+
 
 export class ConversationService {
 	async createConversation(participants: number[], active: string) {
@@ -45,6 +48,86 @@ export class ConversationService {
 			throw new Error("Conversation not found");
 		}
 
-		return conversation.messages;
+		return conversation.messages.map(message => plainToClass(Message, message));
+	}
+
+	async getUserConversations(userId: number): Promise<{
+		conversations: {
+			lastMessage: Message;
+			active: string;
+			messages: undefined;
+			id: number;
+			participants: User[]
+		}[];
+		user: User
+	}> {
+		const userRepository = getRepository(User);
+		// @ts-ignore
+		const user = await userRepository.findOne({where: {id: userId}});
+		const conversationRepository = getRepository(Conversation);
+		let conversations = await conversationRepository
+			.createQueryBuilder("conversation")
+			.leftJoinAndSelect("conversation.participants", "participant")
+			.leftJoinAndSelect("conversation.messages", "message")
+			.leftJoinAndSelect("message.sender", "sender")
+			.orderBy("message.createdAt", "DESC")
+			.getMany();
+
+		// Include only the last message for each conversation
+		const conversationsWithLastMessage = conversations.map(conversation => {
+			const lastMessage = conversation.messages[0]; // messages are already ordered by createdAt DESC
+			return {
+				...conversation,
+				lastMessage,
+				participants: conversation.participants.map((participant) => getFormattedUser(participant)),
+				messages: undefined // remove the full messages array
+			};
+		});
+		return {conversations: conversationsWithLastMessage, user: getFormattedUser(user)}
+	}
+
+	async getAllConversations(): Promise<{
+		lastMessage: Message;
+		active: string;
+		messages: undefined;
+		id: number;
+		participants: User[]
+	}[]> {
+		const conversationRepository = getRepository(Conversation);
+		let conversations = await conversationRepository
+			.createQueryBuilder("conversation")
+			.leftJoinAndSelect("conversation.participants", "participant")
+			.leftJoinAndSelect("conversation.messages", "message")
+			.leftJoinAndSelect("message.sender", "sender")
+			.orderBy("message.createdAt", "DESC")
+			.getMany();
+
+		// Include only the last message for each conversation
+		const conversationsWithLastMessage = conversations.map(conversation => {
+			const lastMessage = conversation.messages[0]; // messages are already ordered by createdAt DESC
+			return {
+				...conversation,
+				participants: conversation.participants.map((participant) => getFormattedUser(participant)),
+				lastMessage,
+				messages: undefined // remove the full messages array
+			};
+		});
+
+		return conversationsWithLastMessage
+	}
+
+	async deleteConversation(conversationId: number): Promise<void> {
+		const conversationRepository = getRepository(Conversation);
+		const conversation = await conversationRepository
+			.createQueryBuilder("conversation")
+			.leftJoinAndSelect("conversation.participants", "participant")
+			.where("conversation.id = :conversationId", {conversationId})
+			.getOne();
+
+		if (!conversation) {
+			throw new Error("Conversation not found");
+		}
+
+		await conversationRepository.remove(conversation);
 	}
 }
