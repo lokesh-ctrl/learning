@@ -38,13 +38,13 @@ const userService = new UserService();
  */
 router.post("/register", async (req, res) => {
 	try {
-		const user = await userService.register(
+		const token = await userService.register(
 			req.body.first_name,
 			req.body.last_name,
 			req.body.email,
 			req.body.password
 		);
-		res.status(201).send(user);
+		res.status(201).send({access_token: token});
 	} catch (error: any) {
 		res.status(400).send(error.message);
 	}
@@ -79,7 +79,25 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
 	try {
 		const token = await userService.login(req.body.username, req.body.password);
-		res.status(200).send({token});
+		res.status(200).send({access_token: token});
+	} catch (error: any) {
+		res.status(400).send(error.message);
+	}
+});
+
+router.get("/me", async (req, res) => {
+	try {
+		// Access the authorization header
+		const authHeader = req.headers.authorization;
+
+		if (!authHeader) {
+			return res.status(401).json({message: 'Unauthorized: Missing authorization header'});
+		}
+		const token = authHeader.split(' ')[1];
+
+		const user = await userService.getLoggedUser(token)
+
+		res.status(200).send(user);
 	} catch (error: any) {
 		res.status(400).send(error.message);
 	}

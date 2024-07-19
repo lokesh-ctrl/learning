@@ -4,12 +4,15 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export class UserService {
-	async register(first_name: string, last_name: string, email: string, password: string): Promise<User> {
+	async register(first_name: string, last_name: string, email: string, password: string): Promise<string> {
 		const userRepository = getRepository(User);
 		const hashedPassword = await bcrypt.hash(password, 10);
 		const user = userRepository.create({first_name, last_name, email, password: hashedPassword});
 		await userRepository.save(user);
-		return user;
+		const token = jwt.sign({id: user.id}, "your-jwt-secret", {
+			expiresIn: "24h",
+		});
+		return token;
 	}
 
 	async login(email: string, password: string) {
@@ -22,5 +25,14 @@ export class UserService {
 			expiresIn: "24h",
 		});
 		return token;
+	}
+
+	async getLoggedUser(token: string) {
+		let decoded = jwt.verify(token, 'your-jwt-secret');
+		const userRepository = getRepository(User);
+		// @ts-ignore
+		const userId = decoded.id
+		const user = await userRepository.findOne({where: {id: userId}});
+		return user
 	}
 }

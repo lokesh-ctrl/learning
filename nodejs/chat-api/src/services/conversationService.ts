@@ -4,11 +4,11 @@ import {User} from "../entities/User";
 import {Message} from "../entities/Message";
 
 export class ConversationService {
-	async createConversation(participants: number[]) {
+	async createConversation(participants: number[], active: string) {
+		const conversationRepository = getRepository(Conversation);
 		const userRepository = getRepository(User);
 		const users = await userRepository.findByIds(participants);
-		const conversationRepository = getRepository(Conversation);
-		const conversation = conversationRepository.create({participants: users});
+		const conversation = conversationRepository.create({participants: users, active});
 		await conversationRepository.save(conversation);
 		return conversation;
 	}
@@ -33,5 +33,18 @@ export class ConversationService {
 		await conversationRepository.save(conversation);
 
 		return message;
+	}
+
+	async getMessages(conversationId: number): Promise<Message[]> {
+		const conversationRepository = getRepository(Conversation);
+		const conversation = await conversationRepository.findOne({
+			where: {id: conversationId},
+			relations: ["messages", "messages.sender"]
+		});
+		if (!conversation) {
+			throw new Error("Conversation not found");
+		}
+
+		return conversation.messages;
 	}
 }

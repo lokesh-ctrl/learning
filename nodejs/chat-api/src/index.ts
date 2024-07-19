@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import {createConnection} from "typeorm";
 import express from "express";
+import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "../swaggerConfig";
 import userRoutes from "./routes/userRoutes";
@@ -10,6 +11,7 @@ createConnection()
 	.then(async () => {
 		const app = express();
 		app.use(express.json());
+		app.use(cors())
 
 		// Swagger UI setup
 		app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

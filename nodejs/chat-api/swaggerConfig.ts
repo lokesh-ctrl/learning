@@ -14,8 +14,22 @@ const swaggerOptions = {
 				description: 'Local server',
 			},
 		],
+		components: {
+			securitySchemes: {
+				bearerAuth: {
+					type: 'http',
+					scheme: 'bearer',
+					bearerFormat: 'JWT',
+				},
+			},
+		},
+		security: [
+			{
+				bearerAuth: [],
+			},
+		],
 	},
-	apis: ['./src/routes/*.ts', './src/entities/*.ts'], // Files containing annotations as above
+	apis: ['./src/routes/*.ts', './src/entities/*.ts'],
 };
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
