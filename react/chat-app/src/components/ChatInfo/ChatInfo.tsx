@@ -17,17 +17,17 @@ const ChatInfo = () => {
         const response = getConversationById(conversationId);
         Promise.all([response]).then((result) => {
             setConversation(result[0].response.data)
-            if (result[0].response.data.users[0].id == loggedInUser.id) {
-                setOtherUser(result[0].response.data.users[1])
+            if (result[0].response.data.participants[0].id == loggedInUser.id) {
+                setOtherUser(result[0].response.data.participants[1])
             } else {
-                setOtherUser(result[0].response.data.users[0])
+                setOtherUser(result[0].response.data.participants[0])
             }
         })
     }, [conversationId])
     return <Stack height={'100%'} maxHeight={'100vh'} width={'auto'}>
         <ChatHeader conversationType={conversation?.active} userName={otherUser.full_name}/>
         <ChatMessages/>
-        <ChatFooter/>
+        <ChatFooter conversationId={conversation?.id}/>
     </Stack>
 }
 export default ChatInfo

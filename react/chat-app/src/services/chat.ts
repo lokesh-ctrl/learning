@@ -23,17 +23,15 @@ export const getConversationById = async (id: string) => {
     }
 }
 
-export const sendMessageIntoConversation = async (convId: string, message: string, senderId: string, receiverId: string) => {
+export const sendMessageIntoConversation = async (convId: string, message: string) => {
     try {
         const authToken = Cookies.get('access_token');
-        const response = await axios.post(API_ENDPOINT + '/messages', {
-            content: message,
-            conversation_id: parseInt(convId),
-            sender_id: senderId,
-            receiver_id: receiverId
+        const response = await axios.post(API_ENDPOINT + '/conversations/' + convId + '/messages', {
+            "content": message
         }, {headers: {'Authorization': 'Bearer ' + authToken}})
         return response
     } catch (e: any) {
+        console.log(e);
     }
 }
 

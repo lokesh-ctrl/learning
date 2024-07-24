@@ -11,12 +11,12 @@ const StyledInput = styled(TextField)(() => ({
         backgroundColor: 'white'
     }
 }));
-export const ChatFooter = ({conversationId, otherUser, loggedUser}) => {
+export const ChatFooter = ({conversationId}) => {
     const theme = useTheme();
     const [message, setMessage] = useState("")
     const sendMessage = async (message) => {
-        const response = await sendMessageIntoConversation(conversationId, message, loggedUser.id, otherUser.id)
-        console.log(response);
+        const response = await sendMessageIntoConversation(conversationId, message)
+        setMessage("");
     }
 
     return <Box sx={{display: "flex", flexDirection: "row"}}>

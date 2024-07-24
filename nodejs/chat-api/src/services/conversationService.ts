@@ -91,7 +91,6 @@ export class ConversationService {
 		user: User
 	}> {
 		const userRepository = getRepository(User);
-		console.log(userId)
 		// @ts-ignore
 		const user = await userRepository.findOne({where: {id: userId}});
 		const conversationRepository = getRepository(Conversation);
