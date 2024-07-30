@@ -38,8 +38,10 @@ export const sendMessageIntoConversation = async (convId: string, message: strin
 export const getMessages = async (convId: string) => {
     try {
         const authToken = Cookies.get('access_token')
-        const response = await axios.get(API_ENDPOINT + '/messages/conversation/' + convId, {headers: {'Authorization': 'Bearer ' + authToken}})
+        const endpoint = API_ENDPOINT + '/conversations/' + convId + '/messages';
+        const response = await axios.get(endpoint, {headers: {'Authorization': 'Bearer ' + authToken}})
         return response;
     } catch (e) {
+        console.error(e);
     }
 }

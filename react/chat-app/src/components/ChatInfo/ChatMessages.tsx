@@ -25,7 +25,6 @@ export const ChatMessages = ({conversationId}) => {
             const messages = result[0].data.map((message) => {
                 return {...message, createdAt: new Date(message.createdAt)}
             })
-            console.log(messages)
             setMessages(messages)
         })
     }, [conversationId])
@@ -44,11 +43,11 @@ export const ChatMessages = ({conversationId}) => {
         }
     })
 
-    const Message = ({message}) => {
+    const Message = ({message,loggedUserId}) => {
         return <div style={{width: '100%'}}>
             <div className={cx({
-                'sent': message.senderId == 1,
-                'received': message.senderId !== 1
+                'sent': message['sender_id'] == loggedUserId,
+                'received': message['sender_id'] != loggedUserId
             })}>
                 <Box sx={{
                     backgroundColor: message.senderId == 1 ? theme.palette.primary.light : theme.palette.grey["500"],

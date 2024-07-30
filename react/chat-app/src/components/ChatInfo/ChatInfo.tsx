@@ -26,7 +26,7 @@ const ChatInfo = () => {
     }, [conversationId])
     return <Stack height={'100%'} maxHeight={'100vh'} width={'auto'}>
         <ChatHeader conversationType={conversation?.active} userName={otherUser.full_name}/>
-        <ChatMessages/>
+        <ChatMessages conversationId={conversation?.id}/>
         <ChatFooter conversationId={conversation?.id}/>
     </Stack>
 }
