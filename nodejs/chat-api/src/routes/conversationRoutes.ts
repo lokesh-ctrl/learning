@@ -37,7 +37,10 @@ const conversationService = new ConversationService();
  */
 router.post("/", authMiddleware, async (req, res) => {
   try {
-    const conversation = await conversationService.createConversation(req.body.participants,req.body.active);
+    const conversation = await conversationService.createConversation(
+      req.body.participants,
+      req.body.active
+    );
     res.status(201).send(conversation);
   } catch (error: any) {
     res.status(400).send(error.message);
@@ -81,7 +84,7 @@ router.post("/:id/messages", authMiddleware, async (req, res) => {
     const message = await conversationService.addMessage(
       parseInt(req.params.id),
       // @ts-ignore
-      req.user.id,
+      parseInt(req.user.id),
       req.body.content
     );
     res.status(201).send(message);
@@ -197,7 +200,9 @@ router.get("/mine", authMiddleware, async (req, res) => {
   try {
     // @ts-ignore
     const userId = req.user.id;
-    const conversations = await conversationService.getUserConversations(userId);
+    const conversations = await conversationService.getUserConversations(
+      userId
+    );
     res.status(200).send(conversations);
   } catch (error: any) {
     res.status(400).send(error.message);
@@ -289,7 +294,7 @@ router.delete("/:id", async (req, res) => {
   try {
     const conversationId = parseInt(req.params.id);
     await conversationService.deleteConversation(conversationId);
-    res.status(200).send({message: "Conversation deleted successfully"});
+    res.status(200).send({ message: "Conversation deleted successfully" });
   } catch (error: any) {
     res.status(400).send(error.message);
   }
@@ -360,7 +365,9 @@ router.delete("/:id", async (req, res) => {
 router.get("/:id", authMiddleware, async (req, res) => {
   try {
     const conversationId = parseInt(req.params.id);
-    const conversation = await conversationService.getConversationById(conversationId);
+    const conversation = await conversationService.getConversationById(
+      conversationId
+    );
     res.status(200).send(conversation);
   } catch (error: any) {
     res.status(400).send(error.message);

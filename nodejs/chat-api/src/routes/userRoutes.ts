@@ -79,7 +79,7 @@ router.post("/register", async (req, res) => {
  */
 router.post("/login", async (req, res) => {
   try {
-    const token = await userService.login(req.body.username, req.body.password);
+    const token = await userService.login(req.body.email, req.body.password);
     res.status(200).send({ access_token: token });
   } catch (error: any) {
     res.status(400).send(error.message);
