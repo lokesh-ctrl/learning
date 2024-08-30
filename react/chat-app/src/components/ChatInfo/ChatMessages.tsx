@@ -2,8 +2,9 @@ import {Box, Divider, Stack, Typography, useTheme} from "@mui/material";
 import {faker} from '@faker-js/faker';
 import cx from 'classnames';
 import './ChatMessages.css'
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {getMessages} from "../../services/chat.ts";
+import {LoggedInUserContext} from "../UserContext.tsx";
 
 export const ChatMessages = ({conversationId}) => {
     const [messages, setMessages] = useState([{
@@ -30,6 +31,7 @@ export const ChatMessages = ({conversationId}) => {
     }, [conversationId])
 
     const parsedMessages = new Map();
+    const [loggedInUser] = useContext(LoggedInUserContext);
 
     messages.forEach((message) => {
         const key = message.createdAt.toDateString();
@@ -50,7 +52,6 @@ export const ChatMessages = ({conversationId}) => {
                 'received': message['sender_id'] != loggedUserId
             })}>
                 <Box sx={{
-                    backgroundColor: message.senderId == 1 ? theme.palette.primary.light : theme.palette.grey["500"],
                     margin: '10px',
                     width: '50%'
                 }} className={'message-card'}>
@@ -76,7 +77,7 @@ export const ChatMessages = ({conversationId}) => {
                 <Divider sx={{width: '30%'}}/>
             </Stack>
             {messages.map((message) => {
-                return <Message message={message}/>
+                return <Message message={message} loggedUserId={loggedInUser.id}/>
             })}
         </div>)
     })

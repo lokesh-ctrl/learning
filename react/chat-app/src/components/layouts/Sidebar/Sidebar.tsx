@@ -19,6 +19,7 @@ const Sidebar = () => {
             const loggedInUserId = result[0].response.data.user.id;
             const pinnedConvs = [];
             const allConvs = [];
+            console.log(result[0].response.data)
 
             result[0].response.data.conversations.forEach((conv) => {
                 let otherUserName = "";
