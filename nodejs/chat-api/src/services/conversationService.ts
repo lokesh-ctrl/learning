@@ -124,14 +124,6 @@ export class ConversationService {
       .where("conversation.id IN (:...ids)", { ids })
       .orderBy("message.createdAt", "DESC")
       .getMany();
-    // let conversations = await conversationRepository
-    //   .createQueryBuilder("conversation")
-    //   .leftJoinAndSelect("conversation.participants", "participant")
-    //   .leftJoinAndSelect("conversation.messages", "message")
-    //   .leftJoinAndSelect("message.sender", "sender")
-    //   .where("participant.id = :userId", { userId })
-    //   .orderBy("message.createdAt", "DESC")
-    //   .getMany();
 
     // Include only the last message for each conversation
     const conversationsWithLastMessage = conversations.map((conversation) => {
