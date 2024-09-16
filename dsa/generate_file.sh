@@ -33,6 +33,7 @@ fi
 if [ -f "$test_file" ]; then
     echo "$test_file already exists."
 else
-    echo "// $filename.test.js" >"$test_file"
+    echo "const {} = require(\""./$filename"\");
+test(\""return correct value\"", () => {})" >"$test_file"
     echo "Generated $test_file"
 fi
