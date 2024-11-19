@@ -17,17 +17,15 @@ var reverseList = function (head) {
   if (!head || !head?.next) {
     return head;
   }
-  let prev = new ListNode(head.val);
-  let current = head.next;
-  let temp = head.next;
-  while (current && current.next != null) {
-    temp = current.next;
+  let prev = null;
+  let current = head;
+  while (current) {
+    let temp = current.next;
     current.next = prev;
     prev = current;
     current = temp;
   }
-  current.next = prev;
-  return current;
+  return prev;
 };
 
 module.exports = { reverseList, ListNode };
