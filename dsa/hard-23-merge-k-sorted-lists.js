@@ -2,7 +2,6 @@
 // https://leetcode.com/problems/merge-k-sorted-lists/description/
 
 const { mergeTwoLists } = require("./easy-21-merge-two-sorted-lists");
-const { generateLinkedList } = require("./helper");
 
 // You are given an array of k linked-lists lists, each linked-list is sorted in ascending order.
 
