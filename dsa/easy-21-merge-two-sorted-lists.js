@@ -15,8 +15,8 @@ Return the head of the merged linked list.
  * @return {ListNode}
  */
 var mergeTwoLists = function (list1, list2) {
-  let head = new ListNode(0);
-  let next = head;
+  let dummy = new ListNode(0);
+  let next = dummy;
   while (list1 && list2) {
     if (list1.val < list2.val) {
       next.next = new ListNode(list1.val);
@@ -27,12 +27,8 @@ var mergeTwoLists = function (list1, list2) {
     }
     next = next.next;
   }
-  if (list1 != null) {
-    next.next = list1;
-  } else if (list2 != null) {
-    next.next = list2;
-  }
-  return head.next;
+  next.next = list1 || list2;
+  return dummy.next;
 };
 
 module.exports = { mergeTwoLists };
