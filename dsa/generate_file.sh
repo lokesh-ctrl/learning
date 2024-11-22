@@ -25,7 +25,7 @@ test_file="$folder/$filename.test.js"
 if [ -f "$js_file" ]; then
     echo "$js_file already exists."
 else
-    echo "// $filename.js" >"$js_file"
+    echo "module.exports = {}" >"$js_file"
     echo "Generated $js_file"
 fi
 
@@ -34,6 +34,8 @@ if [ -f "$test_file" ]; then
     echo "$test_file already exists."
 else
     echo "const {} = require(\""./$filename"\");
-test(\""return correct value\"", () => {})" >"$test_file"
+test(\""return correct value\"", () => {
+expect().toEqual();
+})" >"$test_file"
     echo "Generated $test_file"
 fi
