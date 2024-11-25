@@ -3,6 +3,12 @@ function ListNode(val, next) {
   this.next = next === undefined ? null : next;
 }
 
+function TreeNode(val, left, right) {
+  this.val = val === undefined ? 0 : val;
+  this.left = left === undefined ? null : left;
+  this.right = right === undefined ? null : right;
+}
+
 function generateLinkedList(arr) {
   if (arr.length === 0) return null;
 
@@ -18,4 +24,4 @@ function generateLinkedList(arr) {
   return current; // Return the head of the linked list
 }
 
-module.exports = { generateLinkedList, ListNode };
+module.exports = { generateLinkedList, ListNode, TreeNode };
