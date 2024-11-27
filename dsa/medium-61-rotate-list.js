@@ -20,20 +20,18 @@ var rotateRight = function (head, k) {
   // make circular linked list
   tail.next = head;
   // rotate n-k rotations
-  // [1,2,3,4,5],1
-  // tail is at start [5,1,2,3,4]
-  // after 0 [1,2,3,4,5]
-  // after 1 [2,3,4,5,1]
-  // after 2 [3,4,5,1,2]
-  // after 3 [4,5,1,2,3]
-  // tail is [4,5,1,2,3]
+  // ["1",2,3,4,5],1
+  // tail is at start ["5",1,2,3,4]
+  // after 0 ["1",2,3,4,5]
+  // after 1 ["2",3,4,5,1]
+  // after 2 ["3",4,5,1,2]
+  // after 3 ["4",5,1,2,3]
+  // tail is ["4",5,1,2,3]
   for (let i = 0; i < length - noOfRotationsToMake; i++) {
-    console.log(tail);
     tail = tail.next;
   }
   // make newHead as [5,1,2,3,4]
   newHead = tail.next;
-  console.log(newHead);
   tail.next = null;
   return newHead;
 
