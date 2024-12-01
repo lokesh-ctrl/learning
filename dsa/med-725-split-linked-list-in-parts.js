@@ -27,25 +27,31 @@ function ListNode(val, next) {
 }
 
 var splitListToParts = function (head, k) {
-  let lengthOfList = 0;
+  const result = new Array(k).fill(null);
+  let size = 0;
   let current = head;
-  let array = [];
-  while (current != null) {
-    lengthOfList++;
-    array.push(current.val);
+  while (current) {
+    size++;
     current = current.next;
   }
-  let result = [];
-  if (lengthOfList <= k) {
-    let current = head;
-    while (current != null) {
-      result.push([new ListNode(current.val)]);
+
+  let eachSplitSize = Math.floor(size / k);
+  let remainder = size % k;
+  current = head;
+  let prev = null;
+
+  for (let i = 0; i < k; i++) {
+    result[i] = current;
+    let curentSplitSize = remainder > 0 ? eachSplitSize + 1 : eachSplitSize;
+    remainder--;
+
+    while (current && curentSplitSize) {
+      prev = current;
       current = current.next;
+      curentSplitSize--;
     }
-  } else {
-    let remaining = lengthOfList;
-    let slots = k;
-    while (remaining > 0) {}
+    // Cut the list
+    if (prev) prev.next = null;
   }
   return result;
 };

@@ -24,4 +24,28 @@ function generateLinkedList(arr) {
   return current; // Return the head of the linked list
 }
 
-module.exports = { generateLinkedList, ListNode, TreeNode };
+// Function to insert a value into the BST
+function insertNode(root, value) {
+  if (root === null) {
+    return { value, left: null, right: null };
+  }
+
+  if (value < root.value) {
+    root.left = insertNode(root.left, value);
+  } else if (value > root.value) {
+    root.right = insertNode(root.right, value);
+  }
+
+  return root;
+}
+
+// Function to build a BST from an array
+function buildBSTFromArray(arr) {
+  let root = null;
+  arr.forEach((value) => {
+    root = insertNode(root, value);
+  });
+  return root;
+}
+
+module.exports = { generateLinkedList, ListNode, TreeNode, buildBSTFromArray };
