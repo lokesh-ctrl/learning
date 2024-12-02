@@ -1,19 +1,25 @@
 #!/bin/bash
 
-# Check if a filename is provided
-if [ -z "$1" ]; then
-    echo "Please provide a filename."
+# Check if difficulty, problem number, and problem link are provided
+if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
+    echo "Usage: $0 <difficulty> <problem_number> <problem_link>"
     exit 1
 fi
 
-# Get the filename without extension
-filename=$1
-folder="."
+# Extract inputs
+difficulty=$1
+problem_number=$2
+problem_link=$3
 
-# Check if a folder is provided as the second argument
-if [ ! -z "$2" ]; then
-    folder=$2
-fi
+# Ensure problem_number is always three digits (e.g., 001, 409)
+formatted_number=$(printf "%03d" "$problem_number")
+
+# Extract problem name from the URL
+problem_name=$(echo "$problem_link" | awk -F '/' '{for (i=NF; i>0; i--) if ($i !~ /description/ && $i != "") {print $i; break}}')
+
+# Generate file names
+filename="${difficulty}-${formatted_number}-${problem_name}"
+folder="."
 
 # Create the folder if it doesn't exist
 mkdir -p "$folder"
@@ -25,7 +31,8 @@ test_file="$folder/$filename.test.js"
 if [ -f "$js_file" ]; then
     echo "$js_file already exists."
 else
-    echo "module.exports = {}" >"$js_file"
+    echo "// $problem_link" > "$js_file"
+    echo "module.exports = {};" >> "$js_file"
     echo "Generated $js_file"
 fi
 
@@ -33,9 +40,9 @@ fi
 if [ -f "$test_file" ]; then
     echo "$test_file already exists."
 else
-    echo "const {} = require(\""./$filename"\");
-test(\""return correct value\"", () => {
-expect().toEqual();
-})" >"$test_file"
+    echo "const {} = require(\"./$filename\");" > "$test_file"
+    echo "test(\"return correct value\", () => {" >> "$test_file"
+    echo "    expect().toEqual();" >> "$test_file"
+    echo "});" >> "$test_file"
     echo "Generated $test_file"
 fi
