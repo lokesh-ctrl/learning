@@ -10,7 +10,7 @@ CHALLENGE_NUMBER=$1
 BASE_FOLDER="day$(printf "%02d" $CHALLENGE_NUMBER)"
 JS_FILE="$BASE_FOLDER/day$(printf "%02d" $CHALLENGE_NUMBER).js"
 TEST_FILE="$BASE_FOLDER/day$(printf "%02d" $CHALLENGE_NUMBER).test.js"
-DATA_FILE="$BASE_FOLDER/day$(printf "%02d" $CHALLENGE_NUMBER).txt"
+DATA_FILE="inputData/day$(printf "%02d" $CHALLENGE_NUMBER).text"
 
 # Create the folder if it doesn't exist
 if [ ! -d "$BASE_FOLDER" ]; then
