@@ -10,7 +10,7 @@ describe("Advent of Code - Day 1", () => {
   });
 
   test("Example Case 2", () => {
-    const input = parseFileToArrays("./day1.text");
+    const input = parseFileToArrays("./inputData/day1.text");
     expect(solvePartOne(input)).toBe(3508942);
   });
 });
@@ -25,7 +25,7 @@ describe("Advent of Code - Day 1 - part 2", () => {
   });
 
   test("Example Case 2", () => {
-    const input = parseFileToArrays("./day1.text");
-    expect(solvePartTwo(input)).toBe(3508942);
+    const input = parseFileToArrays("./inputData/day1.text");
+    expect(solvePartTwo(input)).toBe(26593248);
   });
 });

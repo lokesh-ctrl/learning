@@ -28,25 +28,14 @@ function solvePartTwo(input) {
 }
 
 function isSafe(element) {
-  let increasing = element[1] - element[0] > 0;
+  element = element[1] - element[0] > 0 ? element : element.reverse();
   let thisELementSafe = true;
-  if (increasing) {
-    for (let i = 1; i < element.length; i++) {
-      if (
-        element[i] - element[i - 1] < 1 ||
-        Math.abs(element[i] - element[i - 1]) > 3
-      ) {
-        thisELementSafe = false;
-      }
-    }
-  } else {
-    for (let i = 1; i < element.length; i++) {
-      if (
-        element[i - 1] - element[i] < 1 ||
-        Math.abs(element[i] - element[i - 1]) > 3
-      ) {
-        thisELementSafe = false;
-      }
+  for (let i = 1; i < element.length; i++) {
+    if (
+      element[i] - element[i - 1] < 1 ||
+      Math.abs(element[i] - element[i - 1]) > 3
+    ) {
+      thisELementSafe = false;
     }
   }
   return thisELementSafe;

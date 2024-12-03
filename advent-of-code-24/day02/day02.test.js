@@ -12,7 +12,7 @@ describe("Advent of Code - Day 2", () => {
   });
 
   test("Example Case", () => {
-    const input = fs.readFileSync("./day2.text", "utf8");
+    const input = fs.readFileSync("./inputData/day2.text", "utf8");
     expect(solvePartOne(input)).toBe(282);
   });
 });
@@ -29,7 +29,7 @@ describe("Advent of Code - Day 2 part two", () => {
   });
 
   test("Example Case", () => {
-    const input = fs.readFileSync("./day2.text", "utf8");
+    const input = fs.readFileSync("./inputData/day2.text", "utf8");
     expect(solvePartTwo(input)).toBe(349);
   });
 });
