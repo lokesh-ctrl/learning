@@ -1,5 +1,5 @@
 const { solvePartOne, solvePartTwo } = require("./day01.js");
-const { parseFileToArrays } = require("./helper.js");
+const { parseFileToArrays } = require("../helper.js");
 describe("Advent of Code - Day 1", () => {
   test("Example Case", () => {
     const input = [
