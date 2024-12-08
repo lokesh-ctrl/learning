@@ -66,7 +66,7 @@ function solvePartTwo(input) {
 
     while (true) {
       const key = `${row},${col},${direction}`;
-      if (visited.has(key)) return true;
+      if (visited.has(key)) return true; // came to the already visited spot means circular path
       visited.add(key);
 
       const [dr, dc] = moves[direction];

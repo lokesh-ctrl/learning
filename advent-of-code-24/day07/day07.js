@@ -1,7 +1,16 @@
-// Advent of Code: Day 7
 function solvePartOne(input) {
   let result = 0;
-  const inputs = input.split("\n").map((line) => [
+  let inputs = parseInput(input);
+  inputs.forEach((input) => {
+    if (checkValidInput(input[0], input[1], ["+", "*"])) {
+      result += input[0];
+    }
+  });
+  return result;
+}
+
+function parseInput(input) {
+  return input.split("\n").map((line) => [
     parseInt(line.trim().split(":")[0]),
     line
       .trim()
@@ -10,22 +19,24 @@ function solvePartOne(input) {
       .split(" ")
       .map((num) => parseInt(num)),
   ]);
-  inputs.forEach((input) => {
-    if (checkValidInput(input[0], input[1])) {
-      result += input[0];
-    }
-  });
-  return result;
 }
 
-function checkValidInput(testValue, numbers) {
-  const operators = ["+", "*"];
-
+function checkValidInput(testValue, numbers, operators) {
   // Helper function to evaluate an expression left-to-right
   const evaluate = (nums, ops) => {
     let result = nums[0];
     for (let i = 0; i < ops.length; i++) {
-      result = ops[i] === "+" ? result + nums[i + 1] : result * nums[i + 1];
+      switch (ops[i]) {
+        case "+":
+          result += nums[i + 1];
+          break;
+        case "*":
+          result *= nums[i + 1];
+          break;
+        case "||":
+          result = parseInt(result + "" + nums[i + 1]);
+          break;
+      }
     }
     return result;
   };
@@ -56,6 +67,15 @@ function checkValidInput(testValue, numbers) {
   return false;
 }
 
-function solvePartTwo(input) {}
+function solvePartTwo(input) {
+  let result = 0;
+  let inputs = parseInput(input);
+  inputs.forEach((input) => {
+    if (checkValidInput(input[0], input[1], ["+", "*", "||"])) {
+      result += input[0];
+    }
+  });
+  return result;
+}
 
 module.exports = { solvePartOne, solvePartTwo };

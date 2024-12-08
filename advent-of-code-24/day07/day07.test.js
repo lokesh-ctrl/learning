@@ -1,8 +1,6 @@
 const { solvePartOne, solvePartTwo } = require("./day07");
 const file = require("fs");
-describe("Advent of Code - Day 7 Part One", () => {
-  test("Example Case", () => {
-    const input = `190: 10 19
+const input = `190: 10 19
 3267: 81 40 27
 83: 17 5
 156: 15 6
@@ -11,6 +9,8 @@ describe("Advent of Code - Day 7 Part One", () => {
 192: 17 8 14
 21037: 9 7 18 13
 292: 11 6 16 20`;
+describe("Advent of Code - Day 7 Part One", () => {
+  test("Example Case", () => {
     expect(solvePartOne(input)).toBe(3749);
   });
   test("example case 2", () => {
@@ -21,7 +21,10 @@ describe("Advent of Code - Day 7 Part One", () => {
 
 describe("Advent of Code - Day 7 Part Two", () => {
   test("Example Case", () => {
-    const input = "";
-    expect(solvePartTwo(input)).toBe(/* expected output */);
+    expect(solvePartTwo(input)).toBe(11387);
+  });
+  test("example case 2", () => {
+    const input = file.readFileSync("./inputData/day07.text", "utf8");
+    expect(solvePartTwo(input)).toBe(286580387663654);
   });
 });
