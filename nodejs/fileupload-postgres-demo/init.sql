@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS images (
+    id SERIAL PRIMARY KEY,
+    filename TEXT NOT NULL,
+    mimetype TEXT NOT NULL,
+    data BYTEA NOT NULL,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
