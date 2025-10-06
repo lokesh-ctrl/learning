@@ -1,42 +1,38 @@
-// https://leetcode.com/problems/swim-in-rising-water/description/
 /**
  * @param {number[][]} grid
  * @return {number}
  */
 var swimInWater = function (grid) {
-  // first check lowest num in surroundings
-  let current = grid[0][0];
-  let currentPosition = [0, 0];
-  const final = [grid.length - 1, grid.length - 1];
-  let positions = [
-    { x: 0, y: 1 }, //up
-    { x: 0, y: -1 }, // down
-    { x: 1, y: 0 }, // right
-    { x: -1, y: 0 }, //left
+  const n = grid.length;
+  const visited = Array.from({ length: n }, () => Array(n).fill(false));
+
+  const heap = [[grid[0][0], 0, 0]];
+  visited[0][0] = true;
+
+  const directions = [
+    [0, 1],
+    [1, 0],
+    [0, -1],
+    [-1, 0],
   ];
-  let time = 0;
-  while (final[0] != currentPosition[0] || final[1] != currentPosition[1]) {
-    let surroundingPositions = positions.map((position) => {
-      let x = currentPosition[0] + position.x;
-      let y = currentPosition[1] + position.y;
-      if (x >= 0 && y >= 0 && x < grid.length && y < grid.length) {
-        return grid[x][y];
-      } else {
-        return 100000;
+
+  while (heap.length) {
+    heap.sort((a, b) => a[0] - b[0]);
+
+    const [maxVal, x, y] = heap.shift();
+    if (x === n - 1 && y === n - 1) return maxVal;
+
+    for (const [dx, dy] of directions) {
+      const nx = x + dx,
+        ny = y + dy;
+
+      if (nx >= 0 && nx < n && ny >= 0 && ny < n && !visited[nx][ny]) {
+        visited[nx][ny] = true;
+        heap.push([Math.max(maxVal, grid[nx][ny]), nx, ny]);
       }
-    });
-    // Find least in 4 directions
-    let least = Math.min(...surroundingPositions);
-    let leastIndex = surroundingPositions.findIndex((value) => value == least);
-    time += least - current;
-    current = least;
-    currentPosition = [
-      currentPosition[0] + positions[leastIndex].x,
-      currentPosition[1] + positions[leastIndex].y,
-    ];
-    console.log("after iteration", currentPosition, final);
+    }
   }
-  return time;
+  return -1;
 };
 
 module.exports = { swimInWater };
