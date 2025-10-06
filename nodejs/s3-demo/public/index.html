@@ -40,7 +40,8 @@
         fileList.innerHTML = files
           .map(
             (file) =>
-              `<p><a href="${file.url}" target="_blank">${file.key}</a></p>`
+              // `<p><a href="${file.url}" target="_blank">${file.key}</a></p>`
+              `<img src = "${file.url}"/>`
           )
           .join("");
       }

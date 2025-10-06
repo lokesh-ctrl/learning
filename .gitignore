@@ -81,3 +81,7 @@ build-iPhoneSimulator/
 node_modules
 
 */.idea
+ai/venv/*
+ai/.pytest_cache
+ai/__pycache__
+rag_project/venv/*

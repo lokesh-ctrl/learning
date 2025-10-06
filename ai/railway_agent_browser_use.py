@@ -9,7 +9,9 @@ from typing import Dict, Any, List
 from agents import (
     Agent,
     Runner,
+    WebSearchTool,
     OpenAIChatCompletionsModel,
+    function_tool,
 )
 from openai import AsyncOpenAI
 from agents import set_default_openai_client, set_tracing_disabled
@@ -33,11 +35,9 @@ load_dotenv()
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 
 
-async def railway_agent(user_query: str) -> Dict[str, Any]:
-    agent = Agent(
-        ...,
-        model=model,
-    )
+@function_tool
+async def extract_train_travel_info_from_prompt(user_query: str) -> Dict[str, Any]:
+    agent = Agent(..., model=model)
     # Use the AI agent to extract parameters
     extraction_prompt = (
         "Extract the following details from the user query:\n"
@@ -60,7 +60,6 @@ async def railway_agent(user_query: str) -> Dict[str, Any]:
             "class": "3A",
         }
 
-    trains = []
     print(f"Extracted data: {extracted_data}")
 
     return {
@@ -68,8 +67,60 @@ async def railway_agent(user_query: str) -> Dict[str, Any]:
         "destination": extracted_data.get("destination", "Unknown"),
         "date": extracted_data.get("date", "Unknown"),
         "class": extracted_data.get("class", "3A"),
-        "trains": trains,
     }
+
+
+async def railway_agent(user_query: str) -> Dict[str, Any]:
+    agent = Agent(
+        ...,
+        model=model,
+        instructions=(
+            """
+    You are a transport booking assistant specializing in Indian travel.
+        1. If the prompt includes terms related to trains (e.g., "train", "IRCTC", "railway"), use the `extract_train_travel_info` tool to extract details.
+        2. Then, using above info use the WebSearchTool to fetch real-time availability from Goibibo for trains.
+https://www.goibibo.com/trains/
+        3. Always return valid JSON with the following structure:
+        4. If no availability is found, you must still return a valid JSON object with empty `trains` or `flights` list, instead of plain text explanation.
+e.g:{
+  "source": "Delhi",
+  "destination": "Leh",
+  "date": "2025-04-17",
+  "class": "3A",
+  "trains": []
+}
+
+Expected JSON response from Websearchtool for trains:
+{
+  "source": "<city>",
+  "destination": "<city>",
+  "date": "<YYYY-MM-DD>",
+  "class": "<1A|2A|3A|SL|CC|2S>",
+  "trains": [
+    {
+      "train_number": "12951",
+      "train_name": "Mumbai Rajdhani",
+      "departure": "16:25",
+      "arrival": "08:15",
+      "duration": "15h 50m",
+      "availability": "Available 42",
+      "fare": 1985
+    }
+  ]
+}
+Always return valid JSON only. No markdown, no plain text, no extra commentary.
+
+    Respond in valid JSON with keys: source, destination, date, class, trains.
+        """
+            f"User query: {user_query}"
+        ),
+        tools=[WebSearchTool(), extract_train_travel_info_from_prompt],
+    )
+    # Use the AI agent to extract parameters
+    response = await Runner.run(agent, user_query)
+    print("final response is", response)
+
+    return response
 
 
 async def main():
