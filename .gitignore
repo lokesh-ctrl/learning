@@ -85,3 +85,4 @@ ai/venv/*
 ai/.pytest_cache
 ai/__pycache__
 rag_project/venv/*
+*/__pycache__/*
