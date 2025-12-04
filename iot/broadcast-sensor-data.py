@@ -4,9 +4,8 @@ import network
 import socket
 import time
 
-# --- CONFIGURATION ---
-SSID = "Airtel_Whitewalkers"  # <--- CHANGE THIS
-PASSWORD = "johnsnow"  # <--- CHANGE THIS
+SSID = "Airtel_Whitewalkers"
+PASSWORD = "johnsnow"
 RELAY_PIN = 5
 DHT_PIN = 4
 
