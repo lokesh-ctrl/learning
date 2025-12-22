@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "postgres-writable": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-postgres-full-access",
+        "postgresql://myuser:mypassword@127:0:0:1:5432/inventory_db"
+      ]
+    }
+  }
+}
